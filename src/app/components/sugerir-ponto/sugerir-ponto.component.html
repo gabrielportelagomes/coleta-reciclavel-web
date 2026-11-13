@@ -1,0 +1,65 @@
+<div class="sugerir-container">
+  <div class="form-card">
+    <h2>📍 Sugerir Novo Ponto de Coleta</h2>
+    <p class="subtitle">Preencha os dados e clique no mapa para selecionar a localização exata em Teresina.</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Nome do Local / Ponto</label>
+        <input type="text" formControlName="nome" placeholder="Ex: Cooperativa Verde Teresina" />
+      </div>
+
+      <div class="form-group">
+        <label>Descrição / Observações</label>
+        <textarea formControlName="descricao" placeholder="Horário de funcionamento, referências..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Endereço</label>
+          <input type="text" formControlName="endereco" placeholder="Ex: Av. Dom Severino, 1234" />
+        </div>
+        <div class="form-group">
+          <label>Bairro</label>
+          <input type="text" formControlName="bairro" placeholder="Ex: Fátima" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="text" formControlName="latitude" readonly />
+        </div>
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="text" formControlName="longitude" readonly />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Selecione a Localização no Mapa (Teresina)</label>
+        <div id="mini-map"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Materiais Aceitos</label>
+        <div class="materiais-checkboxes">
+          <label *ngFor="let mat of materiaisDisponiveis" class="checkbox-label">
+            <input type="checkbox" [value]="mat.id" (change)="onMaterialChange(mat.id, $event)" />
+            {{ mat.nome }}
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Foto do Local (Opcional)</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="form.invalid || selectedMateriais.length === 0" class="btn-submit">Enviar Sugestão</button>
+        <a routerLink="/" class="btn-cancel">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>

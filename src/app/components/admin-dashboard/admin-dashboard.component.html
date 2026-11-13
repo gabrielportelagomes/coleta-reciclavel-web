@@ -1,0 +1,102 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h2>🛠️ Painel Administrativo - Gerenciamento</h2>
+  </div>
+
+  <div class="section-block">
+    <h3>📌 Pontos Pendentes de Aprovação</h3>
+    <div *ngIf="pontosPendentes.length === 0" class="empty-state">
+      <p>Nenhum ponto pendente de aprovação no momento.</p>
+    </div>
+
+    <div class="grid-pontos">
+      <div *ngFor="let ponto of pontosPendentes" class="ponto-card">
+        <h3>{{ ponto.nome }}</h3>
+        <p class="desc">{{ ponto.descricao || 'Sem descrição' }}</p>
+        <p><strong>Endereço:</strong> {{ ponto.endereco }}, {{ ponto.bairro }}</p>
+        <p><strong>Coordenadas:</strong> {{ ponto.latitude }}, {{ ponto.longitude }}</p>
+
+        <div class="materiais-list">
+          <strong>Materiais:</strong>
+          <span *ngFor="let mat of ponto.materiais" class="tag">{{ mat.nome }}</span>
+        </div>
+
+        <div *ngIf="ponto.imagemBase64" class="img-preview">
+          <img [src]="ponto.imagemBase64" alt="Foto do local" />
+        </div>
+
+        <div class="actions">
+          <button (click)="aprovar(ponto.id!)" class="btn-aprovar">Aprovar</button>
+          <button (click)="rejeitar(ponto.id!)" class="btn-rejeitar">Rejeitar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="novo-material-section">
+    <h3>➕ Cadastrar Novo Material Reciclável</h3>
+    <div class="material-form">
+      <input type="text" [(ngModel)]="novoMaterialNome" placeholder="Nome do material (Ex: Óleo de Cozinha)" />
+      <button (click)="cadastrarMaterial()" class="btn-material">Cadastrar Material</button>
+    </div>
+  </div>
+
+ <div class="section-block">
+  <h3>📦 Materiais Cadastrados</h3>
+  <div *ngIf="materiais.length === 0" class="empty-state">
+    <p>Nenhum material cadastrado.</p>
+  </div>
+  <ul class="admin-list">
+    <li *ngFor="let mat of materiais" class="admin-list-item">
+      <ng-container *ngIf="materialEditandoId !== mat.id; else modoEdicao">
+        <span>{{ mat.nome }}</span>
+        <div class="item-actions">
+          <button (click)="iniciarEdicao(mat)" class="btn-edit">Editar</button>
+          <button (click)="abrirModalExclusao('material', mat.id!, mat.nome)" class="btn-delete">Excluir</button>
+        </div>
+      </ng-container>
+
+      <ng-template #modoEdicao>
+        <div class="edit-inline-container">
+          <input type="text" [(ngModel)]="materialEditandoNome" class="input-edit-inline" />
+          <div class="item-actions">
+            <button (click)="salvarEdicao(mat.id!)" class="btn-salvar">Salvar</button>
+            <button (click)="cancelarEdicao()" class="btn-cancelar-inline">Cancelar</button>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+</div>
+
+  <div class="section-block">
+    <h3>✅ Pontos de Coleta Aprovados</h3>
+    <div *ngIf="pontosAprovados.length === 0" class="empty-state">
+      <p>Nenhum ponto aprovado no momento.</p>
+    </div>
+    <ul class="admin-list">
+      <li *ngFor="let ponto of pontosAprovados" class="admin-list-item">
+        <div>
+          <strong>{{ ponto.nome }}</strong> - <small>{{ ponto.bairro }}</small>
+        </div>
+        <button (click)="abrirModalExclusao('ponto', ponto.id!, ponto.nome)" class="btn-delete">Excluir</button>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="modalAberto">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>⚠️ Confirmar Exclusão</h3>
+    </div>
+    <div class="modal-body">
+      <p>Deseja realmente excluir <strong>"{{ itemNomeParaExcluir }}"</strong>?</p>
+      <p class="modal-subtext">Esta ação não poderá ser desfeita.</p>
+    </div>
+    <div class="modal-footer">
+      <button (click)="fecharModal()" class="btn-cancelar">Cancelar</button>
+      <button (click)="confirmarExclusao()" class="btn-confirmar-exclusao">Sim, Excluir</button>
+    </div>
+  </div>
+</div>

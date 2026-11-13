@@ -1,0 +1,11 @@
+.main-content {
+  position: relative;
+  min-height: calc(100vh - 65px);
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    min-height: calc(100vh - 56px);
+  }
+}

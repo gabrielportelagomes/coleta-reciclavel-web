@@ -1,0 +1,20 @@
+<nav class="navbar">
+      <div class="nav-brand" routerLink="/">
+        <img src="images/logo-icon.png" alt="Logo" class="brand-logo" />
+        <span class="brand-name">descar<span class="highlight">THE</span> - Pontos de Coleta</span>
+      </div>
+
+      <div class="nav-links">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mapa</a>
+        <a routerLink="/sugerir" routerLinkActive="active">Sugerir Ponto</a>
+        <a routerLink="/instrucoes" routerLinkActive="active">Instruções</a>
+
+        <!-- Itens visíveis APENAS quando o admin estiver logado -->
+        <ng-container *ngIf="coletaService.isLoggedIn()">
+          <a routerLink="/admin/dashboard" routerLinkActive="active">Painel Admin</a>
+          <button (click)="logout()" class="btn-logout">Sair</button>
+        </ng-container>
+
+        <a href="https://forms.gle/GacEAxGaxBXbSWZa6" target="_blank" rel="noopener noreferrer" class="feedback-link">💬 Feedback</a>
+      </div>
+    </nav>
